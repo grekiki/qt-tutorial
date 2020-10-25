@@ -1,0 +1,97 @@
+import Cython
+import distutils
+import os
+import shutil
+import subprocess
+import sys
+import platform
+
+Decider('MD5-timestamp')
+
+real_arch = arch = subprocess.check_output(["uname", "-m"], encoding='utf8').rstrip()
+
+cflags = []
+cxxflags = []
+
+lenv = {
+    "PATH": "#external/bin:" + os.environ['PATH'],
+}
+cpppath = [
+    "#external/tensorflow/include",
+]
+
+libpath = [
+    "/usr/lib",
+    "/usr/local/lib",
+]
+
+rpath = [
+]
+
+# allows shared libraries to work globally
+rpath = [os.path.join(os.getcwd(), x) for x in rpath]
+
+ccflags_asan = []
+ldflags_asan = []
+
+# change pythonpath to this
+lenv["PYTHONPATH"] = Dir("#").path
+
+env = Environment(
+  ENV=lenv,
+  CCFLAGS=[
+    "-g",
+    "-fPIC",
+    "-O2",
+    "-Wunused",
+    "-Werror",
+    "-Wno-unknown-warning-option",
+    "-Wno-deprecated-register",
+    "-Wno-register",
+    "-Wno-inconsistent-missing-override",
+    "-Wno-c99-designator",
+    "-Wno-reorder-init-list",
+  ] + cflags + ccflags_asan,
+
+  CPPPATH=cpppath,
+
+  CC='clang',
+  CXX='clang++',
+  LINKFLAGS=ldflags_asan,
+
+  RPATH=rpath,
+
+  CFLAGS=["-std=gnu11"] + cflags,
+  CXXFLAGS=["-std=c++1z"] + cxxflags,
+  LIBPATH=libpath
+)
+
+qt_env = env.Clone()
+qt_env['QTDIR'] = "/usr"
+qt_dirs = [
+  f"/usr/include/{real_arch}-linux-gnu/qt5",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtWidgets",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtGui",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtCore",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtDBus",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtMultimedia",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtGui/5.5.1/QtGui",
+]
+
+qt_env.Tool('qt')
+qt_env['CPPPATH'] += qt_dirs
+qt_flags = [
+  "-D_REENTRANT",
+  "-DQT_NO_DEBUG",
+  "-DQT_WIDGETS_LIB",
+  "-DQT_GUI_LIB",
+  "-DQT_CORE_LIB"
+]
+
+qt_env['CXXFLAGS'] += qt_flags
+
+qt_libs = ["pthread", "Qt5Widgets", "Qt5Gui", "Qt5Core", "Qt5DBus", "Qt5Multimedia", "GL"]
+
+src = ['main.cpp', 'window.cpp']
+
+qt_env.Program("program", src, LIBS=qt_libs)

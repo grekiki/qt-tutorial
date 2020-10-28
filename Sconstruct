@@ -75,7 +75,7 @@ qt_dirs = [
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtCore",
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtDBus",
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtMultimedia",
-  f"/usr/include/{real_arch}-linux-gnu/qt5/QtGui/5.5.1/QtGui",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtGui/5.15.1/QtGui",
 ]
 
 qt_env.Tool('qt')
@@ -92,6 +92,6 @@ qt_env['CXXFLAGS'] += qt_flags
 
 qt_libs = ["pthread", "Qt5Widgets", "Qt5Gui", "Qt5Core", "Qt5DBus", "Qt5Multimedia", "GL"]
 
-src = ['main.cpp', 'window.cpp']
+src = ['main.cpp']
 
 qt_env.Program("program", src, LIBS=qt_libs)

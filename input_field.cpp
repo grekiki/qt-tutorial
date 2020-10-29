@@ -122,10 +122,10 @@ bool InputField::eventFilter(QObject* object, QEvent* event){
     k->setWindowFlags(Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     k->resize(rec.width(), k->height());
-    k->move(1920, 1080);
+    k->move(1920, 1300);
     // k->setWindowState(Qt::WindowFullScreen);
-    k->setAttribute(Qt::WA_NoSystemBackground);
-    k->setAttribute(Qt::WA_TranslucentBackground);
+    // k->setAttribute(Qt::WA_NoSystemBackground);
+    // k->setAttribute(Qt::WA_TranslucentBackground);
     k->show();
   }
   return false;

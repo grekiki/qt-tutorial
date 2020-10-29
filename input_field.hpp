@@ -42,4 +42,6 @@ class InputField : public QWidget {
     bool eventFilter(QObject* object, QEvent* event);
   public slots:
     void getText(QString s);
+  signals:
+    void emitText(QString s);
 };

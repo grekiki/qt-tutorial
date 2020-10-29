@@ -111,7 +111,6 @@ InputField::InputField(QWidget *parent){
 
   k = new Keyboard();
   QObject::connect(k, SIGNAL(emitButton(QString)), this, SLOT(getText(QString)));
-  // l->addWidget(k);
 
   setLayout(l);
 }
@@ -132,8 +131,26 @@ bool InputField::eventFilter(QObject* object, QEvent* event){
 }
 
 void InputField::getText(QString s){
-  line->insert(s);
+  if(!QString::compare(s,"⌫")){
+    line->setText(line->text().left(line->text().length()-1));
+  }
+
+  if(!QString::compare(s,"⏎")){
+    k->hide();
+    emitText(line->text());
+  }
+
+  QVector<QString> control_buttons {"⇧", "↑", "ABC", "⏎", "#+=", "⌫"};
+  for(QString c:control_buttons){
+    if(!QString::compare(s, c)){
+      return;
+    }
+  }
+  if(s.length()==1){
+    line->insert(s);
+  }
   qDebug() << "PACKETS ON THE WAAAAAAAAAAAAY " << s ;
 }
+
 
 

@@ -22,6 +22,7 @@ cpppath = [
 
 libpath = [
     "/usr/lib",
+    "/usr/include/x86_64-linux-gnu/qt5",
     "/usr/local/lib",
 ]
 
@@ -75,7 +76,10 @@ qt_dirs = [
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtCore",
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtDBus",
   f"/usr/include/{real_arch}-linux-gnu/qt5/QtMultimedia",
-  f"/usr/include/{real_arch}-linux-gnu/qt5/QtGui/5.15.1/QtGui",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtWebKit",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtWebKitWidgets",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtQml",
+  f"/usr/include/{real_arch}-linux-gnu/qt5/QtWebView",
 ]
 
 qt_env.Tool('qt')
@@ -90,8 +94,8 @@ qt_flags = [
 
 qt_env['CXXFLAGS'] += qt_flags
 
-qt_libs = ["pthread", "Qt5Widgets", "Qt5Gui", "Qt5Core", "Qt5DBus", "Qt5Multimedia", "GL"]
+qt_libs = ["pthread", "Qt5Widgets", "Qt5Gui", "Qt5Core", "Qt5DBus", "Qt5Multimedia", "Qt5WebKit", "Qt5WebKitWidgets", "Qt5Qml", "Qt5WebView"]
 
-src = ['main.cpp', 'input_field.cpp']
+src = ['main.cpp']
 
 qt_env.Program("program", src, LIBS=qt_libs)

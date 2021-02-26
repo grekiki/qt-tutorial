@@ -12,25 +12,20 @@
 #include <QScreen>
 #include <QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
-#include <QtWebView>
+#include <QWebView>
 
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
-    QtWebView::initialize();
+    // QWebView::initialize();
 
     QWidget *window = new QWidget;
 
     QVBoxLayout *layout = new QVBoxLayout();
+    QWebView* m_pWebView = new QWebView();
+    m_pWebView->load(QUrl("http://www.example.com"));
 
-
-    QLineEdit *nameEdit = new QLineEdit("Dummy");
-
-    QPushButton* m_button = new QPushButton("Hello World");
-    m_button->setGeometry(100, 200, 200, 100);
-
-    layout->addWidget(nameEdit);
-    layout->addWidget(m_button);
+    layout->addWidget(m_pWebView);
 
     window->setLayout(layout);
     // window->setWindowState(Qt::WindowFullScreen);
